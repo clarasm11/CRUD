@@ -24,3 +24,18 @@ CREATE TABLE produtos (
     categoria INT NOT NULL,
     FOREIGN KEY (categoria) REFERENCES categorias(id)
 );
+
+
+
+CREATE TABLE enderecos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+  
+    rua VARCHAR(255) ,
+    numero VARCHAR(20) ,
+    complemento VARCHAR(100),
+    bairro VARCHAR(100),
+    cidade VARCHAR(100),
+    estado VARCHAR(50),
+    cep VARCHAR(20)
+
+);

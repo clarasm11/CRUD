@@ -1,0 +1,16 @@
+<h1 class="mb-4">Detalhes do Endereço</h1>
+
+<ul class="list-group mb-4">
+    <li class="list-group-item"><strong>ID:</strong> <%= endereco.id %></li>
+    <li class="list-group-item"><strong>Usuário:</strong> <%= endereco.usuario %></li>
+    <li class="list-group-item"><strong>Rua:</strong> <%= endereco.rua %></li>
+    <li class="list-group-item"><strong>Número:</strong> <%= endereco.numero %></li>
+    <li class="list-group-item"><strong>Complemento:</strong> <%= endereco.complemento %></li>
+    <li class="list-group-item"><strong>Bairro:</strong> <%= endereco.bairro %></li>
+    <li class="list-group-item"><strong>Cidade:</strong> <%= endereco.cidade %></li>
+    <li class="list-group-item"><strong>Estado:</strong> <%= endereco.estado %></li>
+    <li class="list-group-item"><strong>CEP:</strong> <%= endereco.cep %></li>
+</ul>
+
+<a href="/enderecos/<%= endereco.id %>/edit" class="btn btn-warning">Editar</a>
+<a href="/enderecos" class="btn btn-secondary">Voltar</a>
