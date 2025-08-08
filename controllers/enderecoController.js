@@ -1,78 +1,81 @@
-const Endereco = require('../models/enderecoModel');
+const Endereco = require('../models/enderecoModel.js');
 
 const enderecoController = {
     renderCreateForm: (req, res) => {
         res.render('enderecos/create');
     },
 
-    createEndereco: (req, res) => {
-        const novoEndereco = {
-          
-            rua: req.body.rua,
-            numero: req.body.numero,
-            complemento: req.body.complemento,
-            bairro: req.body.bairro,
-            cidade: req.body.cidade,
-            estado: req.body.estado,
-            cep: req.body.cep
-        };
-
-        Endereco.create(novoEndereco, (err, insertId) => {
-            if (err) return res.status(500).send(err);
+    createEndereco: async (req, res) => {
+        try {
+            await Endereco.create({
+                rua: req.body.rua,
+                numero: req.body.numero,
+                complemento: req.body.complemento,
+                bairro: req.body.bairro,
+                cidade: req.body.cidade,
+                estado: req.body.estado,
+                cep: req.body.cep
+            });
             res.redirect('/enderecos');
-        });
+        } catch (err) {
+            res.status(500).send(err.message);
+        }
     },
 
-    getAllEnderecos: (req, res) => {
-        Endereco.getAll((err, enderecos) => {
-            if (err) return res.status(500).send(err);
+    getAllEnderecos: async (req, res) => {
+        try {
+            const enderecos = await Endereco.findAll();
             res.render('enderecos/index', { enderecos });
-        });
+        } catch (err) {
+            res.status(500).send(err.message);
+        }
     },
 
-    getEnderecoById: (req, res) => {
-        Endereco.findById(req.params.id, (err, endereco) => {
-            if (err) return res.status(500).send(err);
+    getEnderecoById: async (req, res) => {
+        try {
+            const endereco = await Endereco.findByPk(req.params.id);
             if (!endereco) return res.status(404).send('Endereço não encontrado');
             res.render('enderecos/show', { endereco });
-        });
+        } catch (err) {
+            res.status(500).send(err.message);
+        }
     },
 
-    renderEditForm: (req, res) => {
-        Endereco.findById(req.params.id, (err, endereco) => {
-            if (err) return res.status(500).send(err);
+    renderEditForm: async (req, res) => {
+        try {
+            const endereco = await Endereco.findByPk(req.params.id);
+            if (!endereco) return res.status(404).send('Endereço não encontrado');
             res.render('enderecos/edit', { endereco });
-        });
+        } catch (err) {
+            res.status(500).send(err.message);
+        }
     },
 
-    updateEndereco: (req, res) => {
-        const enderecoAtualizado = {
-            rua: req.body.rua,
-            numero: req.body.numero,
-            complemento: req.body.complemento,
-            bairro: req.body.bairro,
-            cidade: req.body.cidade,
-            estado: req.body.estado,
-            cep: req.body.cep
-        };
-
-        Endereco.update(req.params.id, enderecoAtualizado, (err) => {
-            if (err) return res.status(500).send(err);
+    updateEndereco: async (req, res) => {
+        try {
+            await Endereco.update({
+                rua: req.body.rua,
+                numero: req.body.numero,
+                complemento: req.body.complemento,
+                bairro: req.body.bairro,
+                cidade: req.body.cidade,
+                estado: req.body.estado,
+                cep: req.body.cep
+            }, { where: { id: req.params.id } });
             res.redirect('/enderecos');
-        });
+        } catch (err) {
+            res.status(500).send(err.message);
+        }
     },
 
-    deleteEndereco: (req, res) => {
-        Endereco.delete(req.params.id, (err) => {
-            if (err) return res.status(500).send(err);
+    deleteEndereco: async (req, res) => {
+        try {
+            await Endereco.destroy({ where: { id: req.params.id } });
             res.redirect('/enderecos');
-        });
+        } catch (err) {
+            res.status(500).send(err.message);
+        }
     }
 };
-
-exports.createForm = (req, res) => {
-    res.render('enderecos/create.ejs'); // NÃO colocar /views
-};
-
 
 module.exports = enderecoController;
